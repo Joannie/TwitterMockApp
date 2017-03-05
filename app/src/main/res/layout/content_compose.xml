@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_compose"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.codepath.apps.mysimpletwitter.ComposeActivity"
+    tools:showIn="@layout/activity_compose">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvuserName_compose"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="30dp"
+        android:paddingLeft="20dp"
+        android:layout_toRightOf="@+id/profile_img_compose"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/profile_img_compose"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLength="140"
+        android:id="@+id/editText_compose"
+        android:layout_below="@+id/profile_img_compose"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="20dp"
+        android:hint="@string/hint_compose_editText"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tweetBtnText"
+        style="@style/tweetBtnStyle"
+        android:layout_alignBaseline="@+id/numberChar"
+        android:layout_alignBottom="@+id/numberChar"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/tweetBtn"
+        android:onClick="onPostTweet"
+        android:inputType="textNoSuggestions"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberChar"
+        android:layout_marginTop="106dp"
+        android:text="140"
+        android:layout_below="@+id/editText_compose"
+        android:layout_toLeftOf="@+id/tweetBtn"
+        android:layout_toStartOf="@+id/tweetBtn"
+        android:layout_marginRight="17dp"
+        android:layout_marginEnd="17dp" />
+
+</RelativeLayout>
