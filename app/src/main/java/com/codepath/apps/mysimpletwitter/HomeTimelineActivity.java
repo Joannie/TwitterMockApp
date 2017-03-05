@@ -3,6 +3,7 @@ package com.codepath.apps.mysimpletwitter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,8 @@ public class HomeTimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_timeline);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         listView = (ListView) findViewById(R.id.twListView);
         tweets = new ArrayList<>();
@@ -42,7 +45,6 @@ public class HomeTimelineActivity extends AppCompatActivity {
             }
         });
         listView.setAdapter(adapter);
-
         client = TwitterApplication.getRestClient();
 
         populateTimeline();
