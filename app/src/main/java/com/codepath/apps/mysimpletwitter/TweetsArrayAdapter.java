@@ -2,7 +2,6 @@ package com.codepath.apps.mysimpletwitter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,9 @@ import java.util.List;
  */
 
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
+
+    private long lastId;
+
     public TweetsArrayAdapter(Context context, List<Tweet> tweet) {
         super(context, android.R.layout.simple_list_item_1, tweet);
     }
@@ -43,19 +45,11 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         ivProfileImage.setImageResource(android.R.color.transparent);
         timeStamp.setText(tweet.getRelativeTimeAgo(tweet.getCreateAt()));
         Picasso.with(getContext()).load(tweet.getUser().getProfileImgURL()).into(ivProfileImage);
-
-        //if(position == getCount()){
-        Log.d("DEBUG", Long.toString(tweet.getTweetUniqueID()));
-        //}
-
         return convertView;
     }
 
-
-
-    public Long getLastItemID(long id){
-        Log.d("ID_DEBUG", Long.toString(id));
-        return id;
+    public long getLastId() {
+        return lastId;
     }
 
     //private Handler handler

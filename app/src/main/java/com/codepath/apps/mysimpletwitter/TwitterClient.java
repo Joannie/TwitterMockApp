@@ -31,27 +31,33 @@ public class TwitterClient extends OAuthBaseClient {
     private int maxID;
 
 	public TwitterClient(Context context) {
-		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
-	}
-
-
+        super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
+    }
 
 	//Get statuses/home_timeline.json
 	//count=25
 	//since_id=1
 
 	public void getHomeTimeline(AsyncHttpResponseHandler handler){
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
-		//Specify parameter
-		RequestParams params = new RequestParams();
-		params.put("count", 10);
-		params.put("since_id", 1);
-        params.put("cursor", -1);
-		//params.put("max_id", getMaxID());
-		//Execute the request
-		getClient().get(apiUrl, params, handler);
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+        //Specify parameter
+        RequestParams params = new RequestParams();
+        params.put("count", 10);
+        //Execute the request
+        getClient().get(apiUrl, params, handler);
 
-	}
+    }
+
+    public void getHomeTimeline(long max_ID, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 10);
+        params.put("max_id", max_ID);
+
+        //Execute the request
+        getClient().get(apiUrl, params, handler);
+
+    }
 
     //To Get the personal profile in order to compose new tweets
     public void getAccountProfile(AsyncHttpResponseHandler handler){
@@ -64,20 +70,10 @@ public class TwitterClient extends OAuthBaseClient {
     public void postNewTweet(String status, AsyncHttpResponseHandler handler){
         String apiUrl = getApiUrl("statuses/update.json");
         RequestParams params = new RequestParams();
-        params.put("status", status);
-
-        getClient().get(apiUrl, params, handler);
+            params.add("status", status);
+            getClient().post(apiUrl,params,handler);
 
     }
-
-    public int getMaxID() {
-        return maxID;
-    }
-
-    public void setMaxID(int maxID) {
-        this.maxID = maxID;
-    }
-
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");

@@ -23,7 +23,11 @@
         android:layout_alignLeft="@+id/tvuserName"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/tvbodyText" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/tvbodyText"
+        android:autoLink="all"
+        android:linksClickable="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +37,8 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:paddingBottom="10dp"/>
+        android:paddingBottom="10dp"
+        />
 
     <ImageView
         android:layout_width="50dp"

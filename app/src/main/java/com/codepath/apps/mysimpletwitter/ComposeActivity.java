@@ -1,16 +1,17 @@
 package com.codepath.apps.mysimpletwitter;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletwitter.models.Account;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,6 +32,7 @@ public class ComposeActivity extends AppCompatActivity {
     private Button tweetBtn;
     private Account account;
     private TextView numberChar;
+    private final static int RESULT_OK = 200 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,24 +77,34 @@ public class ComposeActivity extends AppCompatActivity {
                 account = Account.fromJSON(jsonObject);
                 profileName.setText("@"+ account.getName());
                 Picasso.with(getContext()).load(account.getProfileImgUrl()).into(profileImg);
-                super.onSuccess(statusCode, headers, jsonObject);
             }
         });
     }
 
     //onClickListener of Tweet Button
     public void onPostTweet(View view){
-        client.postNewTweet(addEditText.getText().toString(), new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("DEBUG", response.toString());
-            }
+        if(!addEditText.getText().toString().isEmpty()) {
+            client.postNewTweet(addEditText.getText().toString(), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    //Log.d("DEBUG", response.toString());
+                    Toast.makeText(ComposeActivity.this, "Post successfully!", Toast.LENGTH_SHORT).show();
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    //Log.d("DEBUG", errorResponse.toString());
+                    Toast.makeText(ComposeActivity.this, "Sorry, something wrong!", Toast.LENGTH_SHORT).show();
+                    setResult(Activity.RESULT_CANCELED);
+                    finish();
+
+                }
+            });
+        }else{
+            Toast.makeText(this, "Please enter what you want to say!", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
