@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletwitter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,10 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.mysimpletwitter.models.Account;
+import com.codepath.apps.mysimpletwitter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -89,7 +92,13 @@ public class ComposeActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     //Log.d("DEBUG", response.toString());
                     Toast.makeText(ComposeActivity.this, "Post successfully!", Toast.LENGTH_SHORT).show();
-                    setResult(Activity.RESULT_OK);
+
+                    //send new post back to timeline as a intent JSONObject
+                    Intent i = new Intent();
+                    Tweet tweet = Tweet.fromJSON(response);
+                    i.putExtra("newpost", Parcels.wrap(tweet));
+
+                    setResult(RESULT_OK, i);
                     finish();
                 }
 

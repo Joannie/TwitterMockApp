@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,12 +18,14 @@ import java.util.Locale;
 
 //Parse the JSON, store the data, encapulate state logic or display logic
 
-public class Tweet {
+@Parcel
+public class Tweet{
     //list out the attributes
-    private String body;
-    private long tweetUniqueID;
-    private User user;
-    private String createAt;
+    String body;
+    long tweetUniqueID;
+    User user;
+    String createAt;
+
 
     //Tweet jsonObject
     public static Tweet fromJSON(JSONObject jsonObject){
@@ -90,4 +93,6 @@ public class Tweet {
 
         return retiveDate;
     }
+
+
 }

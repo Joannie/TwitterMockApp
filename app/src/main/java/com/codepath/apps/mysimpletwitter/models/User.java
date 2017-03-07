@@ -3,17 +3,19 @@ package com.codepath.apps.mysimpletwitter.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by joanniehuang on 2017/3/3.
  */
 
+@Parcel
 public class User {
     //list attribute
-    private String name;
-    private long userID;
-    private String screenName;
-    private String profileImgURL;
+    String name;
+    long userID;
+    String screenName;
+    String profileImgURL;
 
     //generate the User object
     public static User fromJSON(JSONObject jsonObject){

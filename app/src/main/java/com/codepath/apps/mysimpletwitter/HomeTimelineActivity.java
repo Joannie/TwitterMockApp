@@ -2,6 +2,7 @@ package com.codepath.apps.mysimpletwitter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,8 @@ public class HomeTimelineActivity extends AppCompatActivity {
     private TweetsArrayAdapter adapter;
     private ListView listView;
     private final int REQUEST_CODE = 20;
+    private SwipeRefreshLayout swipeContainer;
+
 
 
     @Override
@@ -34,6 +38,8 @@ public class HomeTimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_timeline);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
 
         listView = (ListView) findViewById(R.id.twListView);
         tweets = new ArrayList<>();
@@ -48,10 +54,59 @@ public class HomeTimelineActivity extends AppCompatActivity {
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
         });
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimelineAsync(0);
+            }
+        });
+
         listView.setAdapter(adapter);
         client = TwitterApplication.getRestClient();
 
         populateTimeline();
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_compose){
+            composeTweet();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void composeTweet() {
+        Intent i = new Intent(this, ComposeActivity.class);
+        startActivityForResult(i, REQUEST_CODE);
+
+    }
+
+    //get the activity result tweet object and insert it to adapter to show up
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE){
+            if(resultCode == 200){
+                Tweet tweet = Parcels.unwrap(data.getParcelableExtra("newpost"));
+                adapter.insert(tweet, 0);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private void populateTimeline() {
@@ -78,28 +133,29 @@ public class HomeTimelineActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-        return super.onCreateOptionsMenu(menu);
+    //setup the pull-to-refresh onRefreshListener
+    public void fetchTimelineAsync(int page) {
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint.
+
+        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
+            public void onSuccess(JSONArray json) {
+                // Remember to CLEAR OUT old items before appending in the new ones
+                adapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                adapter.addAll(Tweet.fromJSONArray(json));
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+
+            }
+
+            public void onFailure(Throwable e) {
+                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_compose){
-            composeTweet();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void composeTweet() {
-        Intent i = new Intent(this, ComposeActivity.class);
-        startActivityForResult(i, REQUEST_CODE);
-
-
-
-    }
 
     // Append the next page of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
