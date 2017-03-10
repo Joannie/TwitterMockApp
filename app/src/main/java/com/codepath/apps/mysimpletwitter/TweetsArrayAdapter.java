@@ -1,11 +1,10 @@
 package com.codepath.apps.mysimpletwitter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,39 +17,73 @@ import java.util.List;
  * Created by joanniehuang on 2017/3/3.
  */
 
-public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
+public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.ViewHolder> {
 
-    private long lastId;
+    private List<Tweet> mTweet;
+    private Context mContext;
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweet) {
-        super(context, android.R.layout.simple_list_item_1, tweet);
-    }
-    @NonNull
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //1.get tweets
-        Tweet tweet = getItem(position);
-        //2. Find or inflate the template
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
-        }
-        //3. find the subviews to fill with date in the template
-        ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.profile_img);
-        TextView tvUserName = (TextView) convertView.findViewById(R.id.tvuserName);
-        TextView tvBodyText = (TextView) convertView.findViewById(R.id.tvbodyText);
-        TextView timeStamp = (TextView) convertView.findViewById(R.id.timeStamp);
-        //4. Return the view to the list
-        tvUserName.setText("@"+tweet.getUser().getScreenName());
-        tvBodyText.setText(tweet.getBody());
-        ivProfileImage.setImageResource(android.R.color.transparent);
-        timeStamp.setText(tweet.getRelativeTimeAgo(tweet.getCreateAt()));
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImgURL()).into(ivProfileImage);
-        return convertView;
+        mTweet = tweet;
+        mContext = context;
     }
 
-    public long getLastId() {
-        return lastId;
+    @Override
+    public TweetsArrayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
+
+        ViewHolder holder = new ViewHolder(tweetView);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(TweetsArrayAdapter.ViewHolder holder, int position) {
+        // Get the data model based on position
+        Tweet tweet = mTweet.get(position);
+
+        // Set item views based on your views and data model
+        ImageView ivProfileImage = holder.ivProfileImage;
+        TextView tvUserName = holder.tvUserName;
+        TextView tvBodyText = holder.tvBodyText;
+        TextView timeStamp = holder.timeStamp;
+
+        ivProfileImage.setImageResource(android.R.color.transparent);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImgURL()).into(ivProfileImage);
+        tvUserName.setText("@"+tweet.getUser().getScreenName());
+        tvBodyText.setText(tweet.getBody());
+        timeStamp.setText(tweet.getRelativeTimeAgo(tweet.getCreateAt()));
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return mTweet.size();
+    }
+
+    public Tweet getItem(int position){
+        return mTweet.get(position);
+    }
+
+    public Context getContext() {
+        return mContext;
     }
 
     //private Handler handler
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public ImageView ivProfileImage;
+        public TextView tvUserName;
+        public TextView tvBodyText;
+        public TextView timeStamp;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ivProfileImage = (ImageView) itemView.findViewById(R.id.profile_img);
+            tvUserName = (TextView) itemView.findViewById(R.id.tvuserName);
+            tvBodyText = (TextView) itemView.findViewById(R.id.tvbodyText);
+            timeStamp = (TextView) itemView.findViewById(R.id.timeStamp);
+
+        }
+    }
 }
