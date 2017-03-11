@@ -9,6 +9,7 @@
     <string name="title_activity_compose">Compose Tweet</string>
     <string name="hint_compose_editText">Tweet something!</string>
     <string name="tweetBtnText">TWEET</string>
-
+    <string name="profile_followers">0 Followers</string>
+    <string name="profile_following">0 Following</string>
 
 </resources>

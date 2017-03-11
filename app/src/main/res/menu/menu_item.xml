@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="codepathbootcamp.nytimesearch.activities.SearchActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context="codepathbootcamp.nytimesearch.activities.SearchActivity">
+
+    <item
+        android:id="@+id/action_profile"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"></item>
 
     <item
         android:id="@+id/action_compose"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         android:title="Edit"
-        app:showAsAction="ifRoom|withText" />
+        app:showAsAction="ifRoom" />
+
 
 </menu>

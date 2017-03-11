@@ -59,19 +59,29 @@ public class HomeTimelineActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_compose) {
-            composeTweet();
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_compose:
+                onComposeTweet(item);
+                break;
+            case R.id.action_profile:
+                onProfileView(item);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void composeTweet() {
+    private void onProfileView(MenuItem item){
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivityForResult(i, REQUEST_CODE);
+        //launch the profile view
+    }
+
+    private void onComposeTweet(MenuItem item) {
         Intent i = new Intent(this, ComposeActivity.class);
         startActivityForResult(i, REQUEST_CODE);
 
@@ -119,10 +129,9 @@ public class HomeTimelineActivity extends AppCompatActivity {
         });
     }*/
 
-    public class TweetPageAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
+    public class TweetPageAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
         private String tabTitle[] = {"Home", "Mentions"};
-        private int tabIcons[] = {R.drawable.ic_home, R.drawable.ic_perm_identity};
 
         public TweetPageAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -151,11 +160,6 @@ public class HomeTimelineActivity extends AppCompatActivity {
             return tabTitle.length;
         }
 
-
-        @Override
-        public int getPageIconResId(int position) {
-            return tabIcons[position];
-        }
     }
 
 }
