@@ -52,7 +52,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<a href='https://www.dropbox.com/s/y1vvcag2qkglpvk/MockTwitterApp.mp4?dl=0' title='Video Walkthrough' width=''>Video Workthrough</a>
+<a href='https://cloud.githubusercontent.com/assets/5563183/23833502/cb3b7a44-0781-11e7-9396-51f641ef0d67.gif' title='Video Walkthrough' width=''>Video Workthrough</a>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
