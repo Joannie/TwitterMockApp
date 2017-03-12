@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/relativeLayout">
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,25 +48,41 @@
         android:padding="5dp"
         android:layout_margin="10dp" />
 
-    <!--<ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/replyimg"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@+id/tvbodyText"
         android:layout_below="@+id/tvbodyText"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/colorPrimary"/>
+        android:layout_marginTop="10dp">
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/retweetImg"
-        android:layout_below="@+id/tvbodyText"
-        android:layout_toRightOf="@id/replyimg"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/colorPrimary"-->/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/replyimg"
+            android:layout_marginRight="10dp"
+            android:background="@color/colorPrimary" />
 
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/retweetImg"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimary" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/retweetImg"
+            android:text="111"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/shareImg"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
