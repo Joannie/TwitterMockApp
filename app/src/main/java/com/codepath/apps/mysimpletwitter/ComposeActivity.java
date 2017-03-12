@@ -20,7 +20,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -96,8 +95,9 @@ public class ComposeActivity extends AppCompatActivity {
                     //send new post back to timeline as a intent JSONObject
                     Intent i = new Intent();
                     Tweet tweet = Tweet.fromJSON(response);
-                    i.putExtra("newpost", Parcels.wrap(tweet));
-
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("newpost", tweet);
+                    i.putExtras(bundle);
                     setResult(RESULT_OK, i);
                     finish();
                 }

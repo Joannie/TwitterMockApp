@@ -38,7 +38,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     private void populateTimeline() {
         String screenName = getArguments().getString("screen_name");
-        client.getUserTimeline(screenName, new JsonHttpResponseHandler(){
+        client.getUserInformation(screenName, new JsonHttpResponseHandler(){
             //SUCCESS
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray array){
@@ -55,5 +55,21 @@ public class UserTimelineFragment extends TweetsListFragment {
         });
     }
 
+    @Override
+    public void loadNextDataFromApi(long page) {
+        String screenName = getArguments().getString("screen_name");
+        client.getUserInformation(page, screenName, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray array) {
+                addAll(Tweet.fromJSONArray(array));
+                getAdapter().notifyDataSetChanged();
+                getScrollListener().resetState();
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+
+            }
+        });
+    }
 }

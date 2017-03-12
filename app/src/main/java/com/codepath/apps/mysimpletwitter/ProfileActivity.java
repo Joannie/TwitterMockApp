@@ -16,9 +16,10 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity{
     TwitterClient client;
     User user;
+    String screenName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +28,27 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         client = TwitterApplication.getRestClient();
-        client.getAccountProfile(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJSON(response);
-                getSupportActionBar().setTitle("@"+user.getScreenName());
-                populateProfileHeader(user);
+        screenName = getIntent().getStringExtra("screen_name");
+        String classname = getIntent().getStringExtra("class");
 
-            }
-        });
+        if(classname.equals("userProfile")){
+            Bundle bundle = getIntent().getExtras();
+            user = (User) bundle.getParcelable("user");
+            populateProfileHeader(user);
+        }
+        else {
+            client.getAccountProfile(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    user = User.fromJSON(response);
+                    getSupportActionBar().setTitle("@" + user.getScreenName());
+                    populateProfileHeader(user);
+
+                }
+            });
+        }
 
         //get the screen name from the activity we launched (HometimeLineActivity)
-        String screenName = getIntent().getStringExtra("screen_name");
 
         if(savedInstanceState == null) {
             //Create UserTimelineFragment

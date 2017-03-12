@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletwitter.models;
 
+import android.os.Parcelable;
 import android.text.format.DateUtils;
 
 import org.json.JSONArray;
@@ -19,13 +20,33 @@ import java.util.Locale;
 //Parse the JSON, store the data, encapulate state logic or display logic
 
 @Parcel
-public class Tweet{
+public class Tweet implements Parcelable{
     //list out the attributes
     String body;
     long tweetUniqueID;
     User user;
     String createAt;
 
+    public Tweet(){}
+
+    protected Tweet(android.os.Parcel in) {
+        body = in.readString();
+        tweetUniqueID = in.readLong();
+        user = in.readParcelable(User.class.getClassLoader());
+        createAt = in.readString();
+    }
+
+    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
+        @Override
+        public Tweet createFromParcel(android.os.Parcel in) {
+            return new Tweet(in);
+        }
+
+        @Override
+        public Tweet[] newArray(int size) {
+            return new Tweet[size];
+        }
+    };
 
     //Tweet jsonObject
     public static Tweet fromJSON(JSONObject jsonObject){
@@ -95,4 +116,16 @@ public class Tweet{
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel parcel, int i) {
+        parcel.writeString(body);
+        parcel.writeLong(tweetUniqueID);
+        parcel.writeParcelable(user, i);
+        parcel.writeString(createAt);
+    }
 }

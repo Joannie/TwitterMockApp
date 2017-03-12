@@ -70,8 +70,6 @@
             android:layout_below="@+id/profile_followers"
             android:layout_marginTop="20dp"/>
 
-
-
     </RelativeLayout>
 
     <FrameLayout

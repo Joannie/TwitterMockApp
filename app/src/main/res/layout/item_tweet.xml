@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:layout_toRightOf="@+id/profile_img"
+        android:layout_toRightOf="@+id/user_profile_img"
         android:layout_toEndOf="@+id/profile_img"
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:id="@+id/tvuserName" />
+        android:id="@+id/tvuserName"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
         android:layout_marginRight="10dp"
         android:id="@+id/tvbodyText"
         android:autoLink="all"
-        android:linksClickable="true" />
+        android:linksClickable="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,15 +38,33 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:paddingBottom="10dp"
-        />
+        android:paddingBottom="10dp" />
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/profile_img"
+        android:id="@+id/user_profile_img"
         android:padding="5dp"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp" />
+
+    <!--<ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/replyimg"
+        android:layout_below="@+id/tvbodyText"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/retweetImg"
+        android:layout_below="@+id/tvbodyText"
+        android:layout_toRightOf="@id/replyimg"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorPrimary"-->/>
 
 
 

@@ -40,9 +40,27 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             //FAILED
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+
                 Log.d("DEBUG", errorResponse.toString());
             }
 
+        });
+    }
+
+    @Override
+    public void loadNextDataFromApi(long page) {
+        client.getMentionsTimeline(page, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray array) {
+                addAll(Tweet.fromJSONArray(array));
+                getAdapter().notifyDataSetChanged();
+                getScrollListener().resetState();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+
+            }
         });
     }
 }

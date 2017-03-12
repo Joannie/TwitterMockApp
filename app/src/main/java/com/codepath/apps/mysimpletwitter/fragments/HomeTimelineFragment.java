@@ -1,12 +1,17 @@
 package com.codepath.apps.mysimpletwitter.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
+import com.codepath.apps.mysimpletwitter.ProfileActivity;
+import com.codepath.apps.mysimpletwitter.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletwitter.TwitterApplication;
 import com.codepath.apps.mysimpletwitter.TwitterClient;
 import com.codepath.apps.mysimpletwitter.models.Tweet;
+import com.codepath.apps.mysimpletwitter.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -21,6 +26,7 @@ import cz.msebera.android.httpclient.Header;
 public class HomeTimelineFragment extends TweetsListFragment {
     private TwitterClient client;
     private RecyclerView listView;
+    private final int REQUEST_CODE = 200;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,15 +35,23 @@ public class HomeTimelineFragment extends TweetsListFragment {
         listView = super.getListView();
         populateTimeline();
 
-        /*listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        //set the item onClickOnListener
+        getAdapter().setOnItemClickListener(new TweetsArrayAdapter.OnItemClickListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Tweet tweet = getAdapter().getItem(getAdapter().getItemCount()-1);
-                loadNextDataFromApi(tweet.getTweetUniqueID()-1);
+            public void onItemClick(View itemView, int position) {
+                Intent i = new Intent(getActivity(), ProfileActivity.class);
+                User user = getAdapter().getItem(position).getUser();
+                i.putExtra("screen_name", user.getScreenName());
+                i.putExtra("class", "userProfile");
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", user);
+                i.putExtras(bundle);
+
+                startActivity(i);
             }
-        });*/
+        });
     }
+
 
     private void populateTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler(){
@@ -59,14 +73,15 @@ public class HomeTimelineFragment extends TweetsListFragment {
 
     // Append the next page of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
-    public void loadNextDataFromApi(long maxid) {
 
-        client.getHomeTimeline(maxid, new JsonHttpResponseHandler(){
+    @Override
+    public void loadNextDataFromApi(long page) {
+        client.getHomeTimeline(page, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray array) {
                 addAll(Tweet.fromJSONArray(array));
-                //adapter.addAll(Tweet.fromJSONArray(array));
                 getAdapter().notifyDataSetChanged();
+                getScrollListener().resetState();
             }
 
             @Override
@@ -75,4 +90,10 @@ public class HomeTimelineFragment extends TweetsListFragment {
             }
         });
     }
+
+    @Override
+    public RecyclerView getListView() {
+        return listView;
+    }
+
 }

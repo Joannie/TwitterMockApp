@@ -21,6 +21,8 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
 
     private List<Tweet> mTweet;
     private Context mContext;
+    private static OnItemClickListener listener;
+
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweet) {
         mTweet = tweet;
@@ -31,12 +33,12 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
     public TweetsArrayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
-
         ViewHolder holder = new ViewHolder(tweetView);
         return holder;
     }
+
+
 
     @Override
     public void onBindViewHolder(TweetsArrayAdapter.ViewHolder holder, int position) {
@@ -55,6 +57,15 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         tvBodyText.setText(tweet.getBody());
         timeStamp.setText(tweet.getRelativeTimeAgo(tweet.getCreateAt()));
 
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View itemView, int position);
+    }
+
+    // Define the method that allows the parent activity or fragment to define the listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -77,13 +88,25 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         public TextView tvBodyText;
         public TextView timeStamp;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.profile_img);
+            ivProfileImage = (ImageView) itemView.findViewById(R.id.user_profile_img);
             tvUserName = (TextView) itemView.findViewById(R.id.tvuserName);
             tvBodyText = (TextView) itemView.findViewById(R.id.tvbodyText);
             timeStamp = (TextView) itemView.findViewById(R.id.timeStamp);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
         }
+
     }
 }

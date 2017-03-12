@@ -1,6 +1,8 @@
 package com.codepath.apps.mysimpletwitter.models;
 
 
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
@@ -10,7 +12,7 @@ import org.parceler.Parcel;
  */
 
 @Parcel
-public class User {
+public class User implements Parcelable{
     //list attribute
     String name;
     long userID;
@@ -19,6 +21,20 @@ public class User {
     String profileDescription;
     long followerCount;
     long followingCount;
+
+    public User(){
+    }
+
+    protected User(android.os.Parcel in) {
+        name = in.readString();
+        userID = in.readLong();
+        screenName = in.readString();
+        profileImgURL = in.readString();
+        profileDescription = in.readString();
+        followerCount = in.readLong();
+        followingCount = in.readLong();
+    }
+
 
     //generate the User object
     public static User fromJSON(JSONObject jsonObject){
@@ -66,4 +82,35 @@ public class User {
     public long getFollowingCount() {
         return followingCount;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel parcel, int i) {
+        parcel.writeString(this.getName());
+        parcel.writeLong(this.getUserID());
+        parcel.writeString(this.getScreenName());
+        parcel.writeString(this.getProfileImgURL());
+        parcel.writeString(this.getProfileDescription());
+        parcel.writeLong(this.getFollowerCount());
+        parcel.writeLong(this.getFollowingCount());
+
+    }
+
+    public static final Parcelable.Creator<User> CREATOR
+            = new Parcelable.Creator<User>(){
+
+        @Override
+        public User createFromParcel(android.os.Parcel parcel) {
+            return new User(parcel);
+        }
+
+        @Override
+        public User[] newArray(int i) {
+            return new User[i];
+        }
+    };
 }

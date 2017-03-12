@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,14 +14,11 @@ import android.view.MenuItem;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletwitter.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletwitter.fragments.MentionsTimelineFragment;
-import com.codepath.apps.mysimpletwitter.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletwitter.models.Tweet;
 
-import org.parceler.Parcels;
-
 public class HomeTimelineActivity extends AppCompatActivity {
-    private TweetsListFragment fragmentTweetList;
-    private SwipeRefreshLayout swipeContainer;
+    private HomeTimelineFragment homeTimelineFragment;
+    //private SwipeRefreshLayout swipeContainer;
     private final int REQUEST_CODE = 20;
 
 
@@ -38,6 +34,11 @@ public class HomeTimelineActivity extends AppCompatActivity {
         vpPager.setAdapter(new TweetPageAdapter(getSupportFragmentManager()));
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(vpPager);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_twitter_logo);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         //swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
@@ -77,6 +78,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
 
     private void onProfileView(MenuItem item){
         Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra("class", "accountProfile");
         startActivityForResult(i, REQUEST_CODE);
         //launch the profile view
     }
@@ -93,10 +95,10 @@ public class HomeTimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
             if (resultCode == 200) {
-                Tweet tweet = Parcels.unwrap(data.getParcelableExtra("newpost"));
-                fragmentTweetList.add(tweet);
+                Tweet tweet = (Tweet) data.getParcelableExtra("newpost");
+                homeTimelineFragment.add(tweet);
                 //adapter.insert(tweet, 0);
-                fragmentTweetList.getAdapter().notifyDataSetChanged();
+                homeTimelineFragment.getAdapter().notifyDataSetChanged();
             }
         }
     }
