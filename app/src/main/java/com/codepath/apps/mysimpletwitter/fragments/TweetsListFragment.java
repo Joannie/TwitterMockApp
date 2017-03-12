@@ -69,6 +69,10 @@ public abstract class TweetsListFragment extends Fragment {
         mTweets.add(tweet);
     }
 
+    public void insert(Tweet tweet){
+        mTweets.add(0, tweet);
+    }
+
     public TweetsArrayAdapter getAdapter() {
         return adapter;
     }

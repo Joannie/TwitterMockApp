@@ -16,6 +16,8 @@ import com.codepath.apps.mysimpletwitter.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletwitter.fragments.MentionsTimelineFragment;
 import com.codepath.apps.mysimpletwitter.models.Tweet;
 
+import org.parceler.Parcels;
+
 public class HomeTimelineActivity extends AppCompatActivity {
     private HomeTimelineFragment homeTimelineFragment;
     //private SwipeRefreshLayout swipeContainer;
@@ -95,14 +97,12 @@ public class HomeTimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
             if (resultCode == 200) {
-                Tweet tweet = (Tweet) data.getParcelableExtra("newpost");
-                homeTimelineFragment.add(tweet);
-                //adapter.insert(tweet, 0);
+                Tweet tweet = Parcels.unwrap(data.getParcelableExtra("newpost"));
+                homeTimelineFragment.insert(tweet);
                 homeTimelineFragment.getAdapter().notifyDataSetChanged();
             }
         }
     }
-
 
     //setup the pull-to-refresh onRefreshListener
     /*public void fetchTimelineAsync(int page) {
@@ -144,7 +144,7 @@ public class HomeTimelineActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if(position == 0){
-                return new HomeTimelineFragment();
+                return homeTimelineFragment = new HomeTimelineFragment();
             }else{
                 return new MentionsTimelineFragment();
             }

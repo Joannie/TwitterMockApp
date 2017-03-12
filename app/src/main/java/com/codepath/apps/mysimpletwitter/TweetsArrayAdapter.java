@@ -50,8 +50,14 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         TextView tvUserName = holder.tvUserName;
         TextView tvBodyText = holder.tvBodyText;
         TextView timeStamp = holder.timeStamp;
+        ImageView replyImg = holder.replyImage;
+        ImageView retweetImg = holder.retweetImage;
+        ImageView shareImg = holder.shareImage;
 
         ivProfileImage.setImageResource(android.R.color.transparent);
+        replyImg.setImageResource(R.drawable.ic_reply);
+        retweetImg.setImageResource(R.drawable.ic_retweet);
+        shareImg.setImageResource(R.drawable.ic_star);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImgURL()).into(ivProfileImage);
         tvUserName.setText("@"+tweet.getUser().getScreenName());
         tvBodyText.setText(tweet.getBody());
@@ -87,6 +93,9 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         public TextView tvUserName;
         public TextView tvBodyText;
         public TextView timeStamp;
+        public ImageView replyImage;
+        public ImageView retweetImage;
+        public ImageView shareImage;
 
         public ViewHolder(final View itemView) {
             super(itemView);
@@ -94,6 +103,9 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
             tvUserName = (TextView) itemView.findViewById(R.id.tvuserName);
             tvBodyText = (TextView) itemView.findViewById(R.id.tvbodyText);
             timeStamp = (TextView) itemView.findViewById(R.id.timeStamp);
+            replyImage = (ImageView) itemView.findViewById(R.id.replyimg);
+            retweetImage = (ImageView) itemView.findViewById(R.id.retweetImg);
+            shareImage = (ImageView) itemView.findViewById(R.id.shareImg);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
