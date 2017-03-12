@@ -28,12 +28,12 @@ public class ProfileActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         client = TwitterApplication.getRestClient();
-        screenName = getIntent().getStringExtra("screen_name");
         String classname = getIntent().getStringExtra("class");
 
         if(classname.equals("userProfile")){
             Bundle bundle = getIntent().getExtras();
             user = (User) bundle.getParcelable("user");
+            screenName = getIntent().getStringExtra("screen_name");
             populateProfileHeader(user);
         }
         else {
@@ -42,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity{
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     user = User.fromJSON(response);
                     getSupportActionBar().setTitle("@" + user.getScreenName());
+                    screenName = user.getScreenName();
                     populateProfileHeader(user);
 
                 }
